@@ -24,6 +24,7 @@
  * @date        2024/10/23
  */
 
+#define SPEED_MULTIPLATFORM_MAIN_WITH_UNICODE_SUPPORT
 #include <speed/speed.hpp>
 
 #include "../metamorphosis/program.hpp"
@@ -41,6 +42,47 @@ int main(int argc, char* argv[])
         
         ap.add_help_menu()
                 .description("Rename a set of files following a specified patern.");
+
+        ap.add_keyless_arg("DIR")
+                .description("Directory in which perform the operation.")
+                .store_into(&prog_args.target_directory_pth);
+
+        ap.add_key_value_arg("--regex", "-x")
+                .description("Case insensitive regex that all the files have to match in order "
+                             "to be considered.")
+                .store_into(&prog_args.filter_regx)
+                .mandatory(true);
+
+        ap.add_key_value_arg("--string", "-s")
+                .description("Sting to set.")
+                // .minmax_values(1, ~0ull)
+                .store_into(&prog_args.string_name_componnts);
+
+        ap.add_key_value_arg("--number", "-n")
+                .description("Number to set.")
+                // .minmax_values(1, ~0ull)
+                .store_into(&prog_args.number_name_componnts)
+                .values_with_prefix(true);
+
+        ap.add_key_arg("--sort-alphabetically", "-sa")
+                .description("Sort files alphabetically before renaming.")
+                .action([&]() { prog_args.sort_polics.set(
+                        metamorphosis::sort_policies::ALPHABETICALLY); });
+
+        ap.add_key_arg("--sort-by-image-with", "-siw")
+                .description("Sort files by image with before renaming.")
+                .action([&]() { prog_args.sort_polics.set(
+                        metamorphosis::sort_policies::IMAGE_WITH); });
+
+        ap.add_key_arg("--sort-by-image-height", "-sih")
+                .description("Sort files by image height before renaming.")
+                .action([&]() { prog_args.sort_polics.set(
+                        metamorphosis::sort_policies::IMAGE_HEIGTH); });
+
+        ap.add_key_arg("--sort-by-image-size", "-sis")
+                .description("Sort files by total image size before renaming.")
+                .action([&]() { prog_args.sort_polics.set(
+                        metamorphosis::sort_policies::IMAGE_SIZE); });
                 
         ap.add_help_arg("--help", "-h")
                 .description("Display this help and exit.");
@@ -52,7 +94,7 @@ int main(int argc, char* argv[])
         ap.parse_args(argc, argv);
         
         metamorphosis::program prog(std::move(prog_args));
-                
+        
         return prog.execute();
     }
     catch (const metamorphosis::exception_base& e)

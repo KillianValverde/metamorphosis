@@ -29,8 +29,10 @@
 
 #include <speed/speed.hpp>
 
+#include "forward_declarations.hpp"
 #include "exception.hpp"
 #include "program_args.hpp"
+#include "target_file.hpp"
 
 
 /**
@@ -42,6 +44,8 @@ namespace metamorphosis {
 class program
 {
 public:
+    using string_type = std::string;
+    
     /**
      * @brief       Constructor with parameters.
      * @param       prog_args : The program arguments.
@@ -55,10 +59,31 @@ public:
     int execute();
 
 private:
+    bool get_target_files();
+    
+    void sort_target_files();
+    
+    void set_name_components();
+    
+    void set_new_target_files_names();
+    
+    string_type get_next_target_file_name();
+    
+    bool rename_target_files();
+    
+    std::shared_ptr<target_file> get_target_file(const std::filesystem::path& target_file_pth);
 
 private:
     /** The program arguments. */
     program_args prog_args_;
+    
+    std::multimap<name_component::priority_type, std::unique_ptr<name_component>> name_componnts_;
+    
+    std::vector<std::shared_ptr<target_file>> target_fles_;
+    
+    std::unordered_map<std::size_t, std::shared_ptr<target_file>> target_fles_map_;
+    
+    friend class target_file;
 };
 
 

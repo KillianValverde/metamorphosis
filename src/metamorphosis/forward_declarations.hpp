@@ -1,5 +1,5 @@
 /* metamorphosis
- * Copyright (C) 2024 Killian Valverde.
+ * Copyright (C) 2018-2024 Killian Valverde.
  *
  * This file is part of metamorphosis.
  *
@@ -18,35 +18,25 @@
  */
 
 /**
- * @file        metamorphosis/program_args.hpp
- * @brief       program_args struct header.
+ * @file        metamorphosis/forward_declarations.hpp
+ * @brief       forward_declarations header.
  * @author      Killian Valverde
- * @date        2024/10/23
+ * @date        2024/10/24
  */
  
-#ifndef METAMORPHOSIS_PROGRAM_ARGS_HPP
-#define METAMORPHOSIS_PROGRAM_ARGS_HPP
-
-#include <speed/speed.hpp>
-
-#include "number_name_component.hpp"
-#include "sort_policies.hpp"
-
-
-namespace metamorphosis {
+#ifndef METAMORPHOSIS_FORWARD_DECLARATIONS_HPP
+#define METAMORPHOSIS_FORWARD_DECLARATIONS_HPP
 
 
 /**
- * @brief       All the arguments that are forwarded to the program class.
+ * @brief       Contians all metamorphosis resources.
  */
-struct program_args
-{
-    spd::fsys::rwx_directory_path target_directory_pth;
-    std::string filter_regx;
-    std::vector<name_component::string_type> string_name_componnts;
-    std::vector<number_name_component::integral_type> number_name_componnts;
-    spd::contain::flags<sort_policies> sort_polics;
-};
+namespace metamorphosis {
+
+
+class program;
+class target_file;
+class target_image;
 
 
 }
