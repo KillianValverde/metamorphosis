@@ -34,6 +34,16 @@ TEST(metamorphosis_program, execute)
     int ret = -1;
     metamorphosis::program_args prog_args;
     
+#if defined(_WIN32)
+    prog_args.target_directory_pth = L"D:\\home\\dragonfly\\Desktop\\☆☆☆";
+#else
+    prog_args.target_directory_pth = "/mnt/d/home/dragonfly/Desktop/☆☆☆";
+#endif
+    prog_args.filter_regx = "^.*\\.jpg$";
+    prog_args.string_name_componnts.emplace_back("Pictures - ");
+    prog_args.number_name_componnts.emplace_back(1);
+    prog_args.sort_polics.set(metamorphosis::sort_policies::IMAGE_SIZE);
+    
     metamorphosis::program prog(std::move(prog_args));
     
     EXPECT_NO_THROW(ret = prog.execute());
